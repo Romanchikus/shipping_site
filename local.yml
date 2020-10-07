@@ -1,0 +1,53 @@
+version: '3'
+
+volumes:
+  local_shipping_postgres_data: {}
+  local_shipping_postgres_data_backups: {}
+  static_volume:
+  # redis: {}
+
+services:
+  shipping_site:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: shipping_site_local
+    container_name: shipping_site_local
+    depends_on:
+      - postgres
+      # - redis
+    volumes:
+      - .:/shipping_site
+      - static_volume:/shipping_site/static
+    ports:
+      - 8008:8008
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    # links:
+    #   - redis
+    command: /start
+    
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: shipping_local_postgres
+    container_name: shipping_postgres
+    volumes:
+      - local_shipping_postgres_data:/var/lib/postgresql/data
+      - local_shipping_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+    ports:
+      - "5432:5432"
+      
+  # redis:
+  #   restart: always
+  #   image: "redis:alpine"
+  #   volumes:
+  #     - ./redis.conf:/usr/local/etc/redis/redis.conf 
+  #     - "redis:/data"
+  #   ports:
+  #     - "6379:6379"
+  #   command: redis-server /usr/local/etc/redis/redis.conf
