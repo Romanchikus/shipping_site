@@ -20,7 +20,7 @@ services:
       - .:/shipping_site
       - static_volume:/shipping_site/static
     expose:
-      - 8008
+      - 8000
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
