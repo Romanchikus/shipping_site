@@ -152,14 +152,17 @@ STATICFILES_FINDERS = [
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [("redis", 6379)],
-#         },
-#     },
-# }
+
+REDIS_HOST = 'redis_shipp'
+REDIS_PORT = 6379
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(REDIS_HOST, REDIS_PORT)],
+        },
+    },
+}
 
 admins_data = env.tuple("DJANGO_ADMINS", default="Site <site2020@mail.com>")
 ADMINS = tuple(parseaddr(email) for email in admins_data)

@@ -1,0 +1,44 @@
+$ cat docker-compose
+
+version: '2'
+ 
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+ 
+volumes:
+  data:
+
+$ docker-compose up -d postgres
+$ docker cp worldcities.csv shipping_postgres:/var/lib/postgresql/data/worldcities.csv
+$ docker-compose run --rm postgres psql -h postgres -p 5432 -U postgres --password
+  psql -U postgres
+
+CREATE TABLE cities (
+    City  VARCHAR(100),
+    City_ascii  VARCHAR(100) NULL,
+    Lat  VARCHAR(100),
+    Lng  VARCHAR(100),
+    Country  VARCHAR(100),
+    Iso2  VARCHAR(100),
+    Iso3  VARCHAR(100),
+    Admin  VARCHAR(100),
+    Capital  VARCHAR(100),
+    Population  VARCHAR(100),
+    Custom_Id bigint
+);
+
+
+\timing on
+ 
+
+COPY cities( City, City_ascii, Lat,Lng ,Country ,Iso2 ,Iso3,Admin, Capital,Population,Custom_Id) FROM '/var/lib/postgresql/data/worldcities.csv' DELIMITER ',' CSV HEADER;
+
+Time: 7906.845 ms
