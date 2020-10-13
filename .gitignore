@@ -338,3 +338,4 @@ action.txt
 .env
 .vscode/*
 # .envs/*
+migrations/

@@ -37,8 +37,13 @@ CREATE TABLE cities (
 
 
 \timing on
- 
+                             
+COPY cities_cities( City, City_ascii, Lat,Lng ,Country ,Iso2 ,Iso3,Admin, Capital,Population,Custom_Id) FROM '/var/lib/postgresql/data/worldcities.csv' DELIMITER ',' CSV HEADER;
 
-COPY cities( City, City_ascii, Lat,Lng ,Country ,Iso2 ,Iso3,Admin, Capital,Population,Custom_Id) FROM '/var/lib/postgresql/data/worldcities.csv' DELIMITER ',' CSV HEADER;
 
-Time: 7906.845 ms
+COPY 26542
+Time: 1246.972 ms (00:01.247)
+
+select column_name,data_type 
+from information_schema.columns 
+where table_name = 'cities_cities';
